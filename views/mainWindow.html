@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shopping cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+</head>
+<body>
+    
+    <div class="container">
+        <h4 class="text-center center-align">Shopping Cart Title</h4>
+        <ul></ul>
+    </div>
+    
+    <script>
+        const electron = require('electron');
+        const { ipcRenderer} = electron;
+        const ul = document.querySelector('ul');
+
+        ipcRenderer.on('item:add', function(e, item) {
+            ul.classList.add('collection');
+            const li = document.createElement('LI');
+            const textNode = document.createTextNode(item);
+            li.append(textNode);
+            li.classList.add('collection-item');
+            ul.appendChild(li);
+        });
+
+
+        ipcRenderer.on('item:clear', function() {
+            ul.innerHTML = ''
+            ul.classList.remove('collection');
+        });
+
+        ul.addEventListener('dblclick', function(e){
+            console.log('e',e);
+            e.target.remove();
+
+            if(ul.children.length == 0){
+                ul.classList.remove('collection');
+            }
+            
+        })
+
+    </script>
+
+    
+</body>
+</html>
